@@ -1,21 +1,18 @@
 import pandas as pd
-import re
 import unicodedata
 from collections import Counter
 
 def normalize_unicode(text: str) -> str:
     if not text or text.strip() == "":
-        return text;
+        return text
 
     text = unicodedata.normalize('NFKC', text)
 
     quote_map = {
-        '\'': "'",   # Left single curly quote
-        '\'': "'",   # Right single curly quote
-        '‘': "'",
-        '’': "'",
-        '"': '"',   # Left double curly quote
-        '"': '"',   # Right double curly quote
+        '‘': "'",   # Left single curly quote
+        '’': "'",   # Right single curly quote
+        '“': '"',   # Left double curly quote
+        '”': '"',   # Right double curly quote
         '`': "'",   # Backtick → apostrophe
     }
 
@@ -62,7 +59,7 @@ def smart_split_labels(label_string: str) -> list[str]:
 
     return result
 
-def clean_metadata(csv_path: str, output_path: str = None):
+def clean_metadata(csv_path: str, output_path: str | None = None):
     df = pd.read_csv(csv_path)
     df.columns = [c.strip().lower() for c in df.columns]
 
@@ -85,24 +82,24 @@ def clean_metadata(csv_path: str, output_path: str = None):
             "Divine Attributes & Signs": "Divine Attributes & Signs (Asma wa Sifat)"
         }
 
-  # Eschatology (Akhirah): 1698
-  # History & Stories (Qasas al-Anbiya): 1289
-  # Faith (Aqeedah): 1142
-  # Divine Attributes & Signs (Asma wa Sifat): 1033
-  # Ethics & Morality (Akhlaq): 505
-  # Supplication & Spirituality (Dua, Dhikr, Tazkiyah): 292
-  # Worship ('Ibadah): 162
-  # Law (Ahkam): 143
-  # Social Relations (Mu'amalat): 57
-  # Supplication & Spiritality (Dua, Dhikr, Tazkiyah): 4
-  # Ethics & Morality (Akhlaak): 3
-  # Moral teaching context: 2
-  # Worship ('Ibadah)': 2
-  # Spiritual reminder: 2
-  # Revelation: 2
-  # Divine Attributes & Signs: 1
-  # Eschatology: 1
-  # Supplication & Spiritivity (Dua, Dhikr, Tazkiyah): 1
+        # Eschatology (Akhirah): 1698
+        # History & Stories (Qasas al-Anbiya): 1289
+        # Faith (Aqeedah): 1142
+        # Divine Attributes & Signs (Asma wa Sifat): 1033
+        # Ethics & Morality (Akhlaq): 505
+        # Supplication & Spirituality (Dua, Dhikr, Tazkiyah): 292
+        # Worship ('Ibadah): 162
+        # Law (Ahkam): 143
+        # Social Relations (Mu'amalat): 57
+        # Supplication & Spiritality (Dua, Dhikr, Tazkiyah): 4
+        # Ethics & Morality (Akhlaak): 3
+        # Moral teaching context: 2
+        # Worship ('Ibadah)': 2
+        # Spiritual reminder: 2
+        # Revelation: 2
+        # Divine Attributes & Signs: 1
+        # Eschatology: 1
+        # Supplication & Spiritivity (Dua, Dhikr, Tazkiyah): 1
 
 
         df[field] = df[field].apply(
@@ -145,5 +142,5 @@ def clean_metadata(csv_path: str, output_path: str = None):
 
     return df
 
-if __name__  == "__main__":
+if __name__ == "__main__":
     df_clean = clean_metadata("data/Complete_Quran_data.csv", "data/complete_quran_clean.csv")
