@@ -5,7 +5,7 @@ from collections import Counter
 
 def normalize_unicode(text: str) -> str:
     if not text or text.strip() == "":
-        return text;
+        return text
 
     text = unicodedata.normalize('NFKC', text)
 
