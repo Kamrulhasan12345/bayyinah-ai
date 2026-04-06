@@ -91,22 +91,22 @@ def recommend_verses(query: str, top_k: int = 3, language: str = "english") -> d
         else:
             text = verse['english']
 
-            ranked_results.append({
-                'surah': int(verse['surah']),
-                'ayah': int(verse['ayah']),
-                'text': text,
-                'arabic': verse['arabic'],
-                'translation_en': verse['english'],
-                'translation_ur': verse['urdu'],
-                'emotion': verse['emotion'],
-                'tags': verse['tags'],
-                'category': verse['category'],
-                'context': verse['context'],
-                'relevance_score': final_score,
-                'semantic_distance': round(distance, 4),
-                'semantic_score': round(semantic_score, 4),
-                'metadata_boost': metadata_boost
-            })
+        ranked_results.append({
+            'surah': int(verse['surah']),
+            'ayah': int(verse['ayah']),
+            'text': text,
+            'arabic': verse['arabic'],
+            'translation_en': verse['english'],
+            'translation_ur': verse['urdu'],
+            'emotion': verse['emotion'],
+            'tags': verse['tags'],
+            'category': verse['category'],
+            'context': verse['context'],
+            'relevance_score': final_score,
+            'semantic_distance': round(distance, 4),
+            'semantic_score': round(semantic_score, 4),
+            'metadata_boost': metadata_boost
+        })
 
     query_severity = detect_query_severity(query)
     logger.info(f"Detected query severity: {query_severity}. Applying severity penalties...")
