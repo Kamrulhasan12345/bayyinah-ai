@@ -60,7 +60,7 @@ def smart_split_labels(label_string: str) -> list[str]:
 
     return result
 
-def clean_metadata(csv_path: str, output_path: str = None):
+def clean_metadata(csv_path: str, output_path: str | None = None):
     df = pd.read_csv(csv_path)
     df.columns = [c.strip().lower() for c in df.columns]
 
