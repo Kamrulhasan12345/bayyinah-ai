@@ -45,7 +45,7 @@ def smart_split_labels(label_string: str) -> list[str]:
             paren_depth += 1
             current += char
         elif char == ')':
-            paren_depth -= 1
+            paren_depth = max(paren_depth - 1, 0)
             current += char
         elif char == ',' and paren_depth == 0:
             if current.strip():
