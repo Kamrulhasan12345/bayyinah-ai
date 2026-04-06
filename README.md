@@ -35,3 +35,4 @@ curl -X POST https://YOUR_SPACE.hf.space/v2/recommend \
   -H "Content-Type: application/json" \
   -d '{"query": "I feel anxious about my future", "top_k": 3}'
 
+
