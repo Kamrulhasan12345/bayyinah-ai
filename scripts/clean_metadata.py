@@ -10,12 +10,10 @@ def normalize_unicode(text: str) -> str:
     text = unicodedata.normalize('NFKC', text)
 
     quote_map = {
-        '\'': "'",   # Left single curly quote
-        '\'': "'",   # Right single curly quote
-        '‘': "'",
-        '’': "'",
-        '"': '"',   # Left double curly quote
-        '"': '"',   # Right double curly quote
+        '‘': "'",   # Left single curly quote
+        '’': "'",   # Right single curly quote
+        '“': '"',   # Left double curly quote
+        '”': '"',   # Right double curly quote
         '`': "'",   # Backtick → apostrophe
     }
 
