@@ -29,4 +29,4 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 EXPOSE 7860
 
 # Run with production settings
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "2"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
