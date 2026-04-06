@@ -78,51 +78,65 @@ def compute_severity_penalty(verse_emotions: List[str], verse_context: List[str]
 def enforce_diversity(candidates: List[Dict], top_k: int = 3) -> List[Dict]:
     """
     Ensure category diversity in final results.
-    Prevents echo chambers (e.g., 3 verses from same category).
+    Handles 'category' as a List[str].
     """
     if len(candidates) <= top_k:
         return candidates
     
     selected = []
     categories_used = Counter()
+    # Initialize group counts based on the global CATEGORY_GROUPS mapping
     group_counts = {group: 0 for group in CATEGORY_GROUPS.keys()}
     
     # Sort by score first
-    sorted_candidates = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
+    sorted_candidates = sorted(candidates, key=lambda x: x.get("relevance_score", 0), reverse=True)
     
     for candidate in sorted_candidates:
         if len(selected) >= top_k:
             break
         
-        category = candidate.get("category", "Unknown")
+        # Ensure categories is a list, default to ["Unknown"]
+        item_categories = candidate.get("category")
+        if not isinstance(item_categories, list):
+            item_categories = [item_categories] if item_categories else ["Unknown"]
+
+        # Identify all unique groups this candidate belongs to
+        item_groups = set()
+        for cat in item_categories:
+            for group, group_cats in CATEGORY_GROUPS.items():
+                if cat in group_cats:
+                    item_groups.add(group)
+
+        # --- Diversity Rules ---
         
-        # Find which group this category belongs to
-        candidate_group = None
-        for group, cats in CATEGORY_GROUPS.items():
-            if category in cats:
-                candidate_group = group
-                break
+        # 1. Check Category Limits: Skip if ANY of its categories already appear 2+ times
+        category_limit_reached = any(categories_used[cat] >= 2 for cat in item_categories)
         
-        # Diversity rules:
-        # 1. Max 2 verses from same category
-        # 2. Max 2 verses from same group (for top_k=3)
-        if categories_used[category] >= 2:
-            logger.debug(f"Skip: category {category} already has 2 verses")
+        # 2. Check Group Limits: Skip if ANY of its groups already appear 2+ times
+        group_limit_reached = any(group_counts[group] >= 2 for group in item_groups)
+
+        # Apply skip logic (only if we haven't reached top_k yet)
+        if category_limit_reached:
+            logger.debug(f"Skip: One of categories {item_categories} reached limit")
+            continue
+            
+        if group_limit_reached and len(selected) >= 2:
+            logger.debug(f"Skip: One of groups {item_groups} reached limit")
             continue
         
-        if candidate_group and group_counts[candidate_group] >= 2 and len(selected) >= 2:
-            logger.debug(f"Skip: group {candidate_group} already has 2 verses")
-            continue
-        
+        # Add candidate and update all associated counters
         selected.append(candidate)
-        categories_used[category] += 1
-        if candidate_group:
-            group_counts[candidate_group] += 1
+        for cat in item_categories:
+            categories_used[cat] += 1
+        for group in item_groups:
+            group_counts[group] += 1
     
-    # If we couldn't fill top_k with diversity rules, relax and add remaining
+    # --- Relaxation Phase ---
+    # If we couldn't fill top_k with diversity rules, add the highest-scoring remaining
     if len(selected) < top_k:
+        selected_ids = {id(c) for c in selected} # Use id or a unique key like 'id'
         for candidate in sorted_candidates:
-            if candidate not in selected:
+            if id(candidate) not in selected_ids:
                 selected.append(candidate)
             if len(selected) >= top_k:
                 break

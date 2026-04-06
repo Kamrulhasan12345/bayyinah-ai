@@ -5,7 +5,6 @@ class RecommendRequest(BaseModel):
     query: str = Field(..., min_length=10, max_length=500, description="User's emotional or situational inquiry")
     top_k: int = Field(3, ge=1, le=10)
     language: str = Field("english", pattern="^(english|urdu|arabic)$")
-    llm_provider: str = Field("auto", pattern="^(auto|groq|gemini|huggingface)$")
 
 class VerseResponse(BaseModel):
     surah: int

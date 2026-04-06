@@ -130,13 +130,14 @@ def generate_reflection_huggingface(query: str, verse: Dict) -> Optional[str]:
         logger.error(f"Hugging Face reflection failed: {e}")
         return None
 
-def generate_reflection(query: str, verse: Dict, provider: str = "auto") -> Optional[str]:
+def generate_reflection(query: str, verse: Dict, provider: str = "auto") -> Optional[tuple[str | None, str | None]]:
     """
     Generate reflection with automatic fallback between providers.
     
-    Priority: Groq → Gemini → Hugging Face → None
+    Priority: Groq → Hugging Face → None
     """
     reflection = None
+    reflection_provider = None
     cache_key = _get_cache_key(query, verse["surah"], verse["ayah"])
     if cache_key in _reflection_cache and _is_cache_valid(_reflection_cache[cache_key]):
         logger.info(f"📦 Serving cached reflection for {verse['surah']}:{verse['ayah']}")
@@ -152,10 +153,12 @@ def generate_reflection(query: str, verse: Dict, provider: str = "auto") -> Opti
         # Try all in priority order
         for prov_name, prov_func in providers.items():
             reflection = prov_func(query, verse)
+            reflection_provider = prov_name
             if reflection:
                 break
     elif provider in providers:
         reflection = providers[provider](query, verse)
+        reflection_provider = provider
     else:
         logger.warning(f"Unknown provider: {provider}")
         return None
@@ -170,7 +173,7 @@ def generate_reflection(query: str, verse: Dict, provider: str = "auto") -> Opti
         }
         logger.info(f"💾 Cached reflection (TTL: 1 hour)")
     
-    return reflection
+    return (reflection, reflection_provider)
 
 def get_cache_stats() -> Dict:
     """Return cache statistics for monitoring"""

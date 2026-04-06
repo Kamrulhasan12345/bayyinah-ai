@@ -1,13 +1,13 @@
 import logging
 import json
 import os
-from app.services.guidance_scorer import compute_repetition_penalty, compute_severity_penalty, detect_query_severity
+from app.services.guidance_scorer import compute_repetition_penalty, compute_severity_penalty, detect_query_severity, enforce_diversity
 from app.services.loader import load_dataset
 from app.services.embeddings import semantic_search, get_model, MODEL_NAME
 
 logger = logging.getLogger(__name__)
 
-INTENT_MAP_PATH = "data/intent_map.json"
+INTENT_MAP_PATH = os.getenv("INTENT_MAP_PATH", "data/intent_map.json")
 _intent_map = None
 
 def load_intent_map() -> dict:
@@ -126,7 +126,8 @@ def recommend_verses(query: str, top_k: int = 3, language: str = "english") -> d
         result['repetition_penalty'] = repetition_penalty
     
     ranked_results.sort(key=lambda x: x['relevance_score'], reverse=True)
-    final_results = ranked_results[:top_k]
+    final_results = enforce_diversity(ranked_results, top_k=top_k)
+
 
     logger.info(f"Returning top {len(final_results)} results for query: '{query}'")
 

@@ -58,9 +58,13 @@ async def recommend_with_reflection(req: RecommendRequest, llm_provider: str = Q
                 verse=verse_dict,
                 provider=llm_provider
             )
-            
-            verse_dict["reflection"] = reflection
-            verse_dict["reflection_provider"] = llm_provider if reflection else None
+
+            if reflection:
+                verse_dict["reflection"] = reflection[0]
+                verse_dict["reflection_provider"] = reflection[1]
+            else:
+                verse_dict["reflection"] = None
+                verse_dict["reflection_provider"] = None
             
             verses_with_reflection.append(verse_dict)
         
