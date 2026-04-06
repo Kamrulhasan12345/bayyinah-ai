@@ -135,7 +135,7 @@ def clean_metadata(csv_path: str, output_path: str = None):
 
         all_items = [item for sublist in df[field] for item in sublist]
         freq = Counter(all_items)
-        print(f"\n{field.upper()} - Top 10 values:")
+        print(f"\n{field.upper()} - Most Common values:")
         for item, count in freq.most_common():
             print(f"  {item}: {count}")
 
