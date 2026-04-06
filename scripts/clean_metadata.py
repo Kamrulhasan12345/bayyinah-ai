@@ -85,24 +85,24 @@ def clean_metadata(csv_path: str, output_path: str = None):
             "Divine Attributes & Signs": "Divine Attributes & Signs (Asma wa Sifat)"
         }
 
-  # Eschatology (Akhirah): 1698
-  # History & Stories (Qasas al-Anbiya): 1289
-  # Faith (Aqeedah): 1142
-  # Divine Attributes & Signs (Asma wa Sifat): 1033
-  # Ethics & Morality (Akhlaq): 505
-  # Supplication & Spirituality (Dua, Dhikr, Tazkiyah): 292
-  # Worship ('Ibadah): 162
-  # Law (Ahkam): 143
-  # Social Relations (Mu'amalat): 57
-  # Supplication & Spiritality (Dua, Dhikr, Tazkiyah): 4
-  # Ethics & Morality (Akhlaak): 3
-  # Moral teaching context: 2
-  # Worship ('Ibadah)': 2
-  # Spiritual reminder: 2
-  # Revelation: 2
-  # Divine Attributes & Signs: 1
-  # Eschatology: 1
-  # Supplication & Spiritivity (Dua, Dhikr, Tazkiyah): 1
+        # Eschatology (Akhirah): 1698
+        # History & Stories (Qasas al-Anbiya): 1289
+        # Faith (Aqeedah): 1142
+        # Divine Attributes & Signs (Asma wa Sifat): 1033
+        # Ethics & Morality (Akhlaq): 505
+        # Supplication & Spirituality (Dua, Dhikr, Tazkiyah): 292
+        # Worship ('Ibadah): 162
+        # Law (Ahkam): 143
+        # Social Relations (Mu'amalat): 57
+        # Supplication & Spiritality (Dua, Dhikr, Tazkiyah): 4
+        # Ethics & Morality (Akhlaak): 3
+        # Moral teaching context: 2
+        # Worship ('Ibadah)': 2
+        # Spiritual reminder: 2
+        # Revelation: 2
+        # Divine Attributes & Signs: 1
+        # Eschatology: 1
+        # Supplication & Spiritivity (Dua, Dhikr, Tazkiyah): 1
 
 
         df[field] = df[field].apply(
