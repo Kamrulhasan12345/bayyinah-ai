@@ -143,5 +143,5 @@ def clean_metadata(csv_path: str, output_path: str = None):
 
     return df
 
-if __name__  == "__main__":
+if __name__ == "__main__":
     df_clean = clean_metadata("data/Complete_Quran_data.csv", "data/complete_quran_clean.csv")
