@@ -7,7 +7,7 @@ from sentence_transformers import SentenceTransformer
 logger = logging.getLogger(__name__)
 
 MODEL_NAME = "all-MiniLM-L6-v2"
-EMBEDDINGS_CACHE_PATH = "data/verse_embeddings.npy"
+EMBEDDINGS_CACHE_PATH = os.getenv("EMBEDDINGS_CACHE_PATH", "data/verse_embeddings.npy")
 
 _model = None
 _faiss_index = None
