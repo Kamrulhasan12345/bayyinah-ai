@@ -8,7 +8,7 @@ pinned: false
 license: mit
 ---
 
-# 🕌 Quran Ayah Recommender API
+# 🕌 Bayyinah Quranic AI API
 
 A guidance-aware API that matches emotional/textual inquiries to relevant Quranic verses.
 
@@ -17,7 +17,6 @@ A guidance-aware API that matches emotional/textual inquiries to relevant Qurani
 - ✅ Hybrid semantic + metadata ranking
 - ✅ Guidance-aware scoring (severity matching, diversity)
 - ✅ Optional LLM-generated reflections
-- ✅ Multi-language support (English, Urdu, Arabic)
 
 ## Endpoints
 
@@ -31,8 +30,9 @@ A guidance-aware API that matches emotional/textual inquiries to relevant Qurani
 ## Example Usage
 
 ```bash
-curl -X POST https://YOUR_SPACE.hf.space/v2/recommend \
+curl -X POST https://kamrulhasan12345-bayyinah-ai.hf.space/v2/recommend \
   -H "Content-Type: application/json" \
   -d '{"query": "I feel anxious about my future", "top_k": 3}'
+```
 
 
